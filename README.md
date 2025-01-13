@@ -1,0 +1,2 @@
+# AiPromoteManager
+使用Cursor开发的AiPromoteManager
