@@ -28,11 +28,28 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             update_data = obj_in
         else:
             update_data = obj_in.dict(exclude_unset=True)
-        if update_data.get("password"):
-            hashed_password = get_password_hash(update_data["password"])
-            del update_data["password"]
+        
+        # 如果包含密码，需要先验证当前密码
+        if "current_password" in update_data and "new_password" in update_data:
+            if not verify_password(update_data["current_password"], db_obj.hashed_password):
+                raise ValueError("Current password is incorrect")
+            
+            # 验证通过后，使用新密码
+            hashed_password = get_password_hash(update_data["new_password"])
+            del update_data["current_password"]
+            del update_data["new_password"]
             update_data["hashed_password"] = hashed_password
-        return super().update(db, db_obj=db_obj, obj_in=update_data)
+        
+        # 使用 merge 而不是 add
+        db_obj = db.merge(db_obj)
+        
+        for field in update_data:
+            if hasattr(db_obj, field):
+                setattr(db_obj, field, update_data[field])
+        
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
 
     def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
         user = self.get_by_email(db, email=email)

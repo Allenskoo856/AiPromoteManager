@@ -94,7 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
     newPassword?: string
   }) {
     try {
-      const { data: responseData } = await request.put<User>('/api/v1/users/me', data)
+      const { data: responseData } = await request.patch<User>('/api/v1/users/me', data)
       user.value = responseData
       return true
     } catch (error) {

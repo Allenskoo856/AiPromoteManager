@@ -24,8 +24,14 @@
               <input
                 type="text"
                 v-model="username"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                class="text-gray-900 bg-white px-4 py-2 rounded-md border border-gray-200 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
+              <button
+                @click="updateUsername"
+                class="mt-4 w-full bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150"
+              >
+                保存修改
+              </button>
             </div>
           </div>
         </div>
@@ -44,7 +50,7 @@
               <input
                 type="password"
                 v-model="passwordForm.current_password"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                class="text-gray-900 bg-white px-4 py-2 rounded-md border border-gray-200 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
             </div>
@@ -53,7 +59,7 @@
               <input
                 type="password"
                 v-model="passwordForm.new_password"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                class="text-gray-900 bg-white px-4 py-2 rounded-md border border-gray-200 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
             </div>
@@ -62,7 +68,7 @@
               <input
                 type="password"
                 v-model="passwordForm.confirm_password"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150"
+                class="text-gray-900 bg-white px-4 py-2 rounded-md border border-gray-200 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
             </div>
@@ -88,6 +94,7 @@
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { useUserStatsStore } from '../stores/userStats'
+import { toast } from '../utils/toast'
 
 const authStore = useAuthStore()
 const statsStore = useUserStatsStore()
@@ -121,13 +128,16 @@ async function updateUsername() {
     await authStore.updateProfile({
       username: username.value
     })
+    toast.success('用户名修改成功')
   } catch (error) {
     console.error('Failed to update username:', error)
+    toast.error('更新用户名失败')
   }
 }
 
 async function handlePasswordChange() {
   if (passwordForm.value.new_password !== passwordForm.value.confirm_password) {
+    toast.error('两次输入的密码不一致')
     return
   }
 
@@ -137,6 +147,7 @@ async function handlePasswordChange() {
       currentPassword: passwordForm.value.current_password,
       newPassword: passwordForm.value.new_password
     })
+    toast.success('密码修改成功')
     passwordForm.value = {
       current_password: '',
       new_password: '',
@@ -144,6 +155,7 @@ async function handlePasswordChange() {
     }
   } catch (error) {
     console.error('Failed to change password:', error)
+    toast.error('密码修改失败，请重试')
   } finally {
     isSubmitting.value = false
   }

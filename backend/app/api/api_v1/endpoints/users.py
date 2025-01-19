@@ -37,18 +37,31 @@ def read_user_me(
     """
     return current_user
 
+@router.patch("/me", response_model=user_schema.User)
 @router.put("/me", response_model=user_schema.User)
 def update_user_me(
     *,
     db: Session = Depends(get_db),
-    user_in: user_schema.UserUpdate,
     current_user: user_schema.User = Depends(get_current_active_user),
+    user_in: user_schema.UserUpdate,
 ) -> Any:
     """
     Update own user.
     """
-    user = crud_user.update(db, db_obj=current_user, obj_in=user_in)
-    return user 
+    try:
+        user = crud_user.update(db, db_obj=current_user, obj_in=user_in)
+        return user
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e)
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
 @router.get("/me/stats", response_model=user_schema.UserStats)
 def get_user_stats(
