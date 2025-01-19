@@ -14,17 +14,17 @@
           <div class="rounded-md shadow">
             <router-link
               to="/prompts"
-              class="btn-primary px-8 py-3 text-base font-medium md:py-4 md:text-lg md:px-10"
+              class="btn-secondary px-8 py-3 text-base font-medium md:py-4 md:text-lg md:px-10"
             >
               浏览提示词
             </router-link>
           </div>
           <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
             <router-link
-              to="/register"
-              class="btn-secondary px-8 py-3 text-base font-medium md:py-4 md:text-lg md:px-10"
+              :to="authStore.isLoggedIn ? '/prompts' : '/register'"
+              class="btn-primary px-8 py-3 text-base font-medium md:py-4 md:text-lg md:px-10"
             >
-              立即注册
+              {{ authStore.isLoggedIn ? '立即体验' : '立即注册' }}
             </router-link>
           </div>
         </div>

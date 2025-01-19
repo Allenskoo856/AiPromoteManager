@@ -62,7 +62,7 @@
                   to="/profile"
                   class="text-gray-500 hover:text-gray-700"
                 >
-                  个人中心
+                  {{ authStore.user?.username || '个人中心' }}
                 </router-link>
               </div>
             </template>
