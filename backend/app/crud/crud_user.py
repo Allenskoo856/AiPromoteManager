@@ -31,8 +31,9 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         
         # 如果包含密码，需要先验证当前密码
         if "current_password" in update_data and "new_password" in update_data:
+            # 验证当前密码是否正确
             if not verify_password(update_data["current_password"], db_obj.hashed_password):
-                raise ValueError("Current password is incorrect")
+                raise ValueError("当前密码不正确")
             
             # 验证通过后，使用新密码
             hashed_password = get_password_hash(update_data["new_password"])

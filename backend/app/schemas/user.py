@@ -15,8 +15,14 @@ class UserCreate(UserBase):
     password: str
 
 # 更新用户时可以更新的属性
-class UserUpdate(UserBase):
-    password: Optional[str] = None
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    username: Optional[str] = None
+    current_password: Optional[str] = None
+    new_password: Optional[str] = None
+
+    class Config:
+        from_attributes = True
 
 # API 返回的用户信息
 class User(UserBase):
