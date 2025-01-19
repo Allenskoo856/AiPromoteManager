@@ -1,4 +1,4 @@
-#!/Users/allen/Documents/curscode/ai-prompt-manager/backend/venv/bin/python3.11
+#!/Users/lizonglun/code/AiPromoteManager/backend/venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     MYSQL_HOST: str = "127.0.0.1"
     MYSQL_PORT: str = "3306"
     MYSQL_USER: str = "root"
-    MYSQL_PASSWORD: str = "lzl660928"
+    MYSQL_PASSWORD: str = "Jack5211.."
     MYSQL_DB: str = "ai_prompt_manager"
     DATABASE_URL: Optional[str] = None
 
