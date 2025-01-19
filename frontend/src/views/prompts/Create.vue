@@ -306,16 +306,35 @@ function removeTag(tagId: number) {
 }
 
 // 处理标签选择
-function handleTagSelect() {
+async function handleTagSelect() {
+  if (!tagInput.value.trim()) return
+
   if (selectedTagIndex.value >= 0 && tagSuggestions.value[selectedTagIndex.value]) {
+    // 如果有选中的建议标签，直接使用
     selectTag(tagSuggestions.value[selectedTagIndex.value])
-  } else if (tagInput.value.trim()) {
-    // 如果有匹配的现有标签，选择第一个
+  } else {
+    // 查找是否有匹配的现有标签
     const matchingTag = availableTags.value.find(tag => 
       tag.name.toLowerCase() === tagInput.value.trim().toLowerCase()
     )
+    
     if (matchingTag) {
+      // 如果有匹配的标签，使用现有标签
       selectTag(matchingTag)
+    } else {
+      // 如果没有匹配的标签，创建新标签
+      try {
+        const newTag = await tagStore.createTag({
+          name: tagInput.value.trim()
+        })
+        // 将新标签添加到所有标签列表中
+        allTags.value.push(newTag)
+        // 选择新创建的标签
+        selectTag(newTag)
+      } catch (error) {
+        console.error('Failed to create tag:', error)
+        alert('创建标签失败，请重试')
+      }
     }
   }
 }
