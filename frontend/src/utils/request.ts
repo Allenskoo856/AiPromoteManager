@@ -4,7 +4,7 @@ import router from '../router'
 
 // 创建 axios 实例
 const request = axios.create({
-  baseURL: "/",
+  baseURL: import.meta.env.DEV ? 'http://localhost:8000' : '/',
   timeout: 15000,
 })
 
@@ -47,4 +47,4 @@ request.interceptors.response.use(
   }
 )
 
-export default request 
+export default request

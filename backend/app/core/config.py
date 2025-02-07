@@ -7,10 +7,10 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # 数据库配置
-    MYSQL_HOST: str = "127.0.0.1"
+    MYSQL_HOST: str = "192.168.0.21"
     MYSQL_PORT: str = "3306"
     MYSQL_USER: str = "root"
-    MYSQL_PASSWORD: str = "Jack5211.."
+    MYSQL_PASSWORD: str = "lzl660928"
     MYSQL_DB: str = "ai_prompt_manager"
     DATABASE_URL: Optional[str] = None
 

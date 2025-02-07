@@ -3,16 +3,11 @@ FROM python:3.11-slim as builder
 
 WORKDIR /app
 
-# 安装构建依赖
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc python3-dev && \
-    rm -rf /var/lib/apt/lists/*
-
 # 复制依赖文件
 COPY requirements.txt .
 
 # 安装依赖
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && pip config set install.trusted-host mirrors.aliyun.com && pip install --no-cache-dir -r requirements.txt
 
 # 运行阶段
 FROM python:3.11-slim

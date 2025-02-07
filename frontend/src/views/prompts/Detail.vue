@@ -58,7 +58,9 @@
             <div class="mb-6">
               <h2 class="text-lg font-medium text-gray-900 mb-3">提示词内容</h2>
               <div class="relative">
-                <pre class="bg-gray-50 rounded-lg p-4 font-mono text-sm whitespace-pre-wrap">{{ prompt.content }}</pre>
+                <div class="bg-gray-50 rounded-lg p-4">
+                  <MdPreview :modelValue="prompt.content || ''" class="prose-sm max-w-none" />
+                </div>
                 <button
                   class="absolute top-2 right-2 p-2 text-gray-500 hover:text-gray-700 bg-white rounded-md shadow-sm"
                   @click="copyContent"
@@ -139,6 +141,8 @@ import { usePromptStore } from '../../stores/prompt'
 import { useAuthStore } from '../../stores/auth'
 import BackButton from '@/components/BackButton.vue'
 import type { Prompt } from '../../types'
+import { MdPreview } from 'md-editor-v3'
+import 'md-editor-v3/lib/preview.css'
 
 const route = useRoute()
 const router = useRouter()
@@ -199,23 +203,33 @@ const copyContent = async () => {
   
   isCopying.value = true
   try {
-    await navigator.clipboard.writeText(prompt.value.content)
-    showCopySuccess.value = true
-    fadeOut.value = false
-    
-    // 1.8秒后开始淡出动画
-    setTimeout(() => {
-      fadeOut.value = true
-    }, 1800)
-    
-    // 2秒后完全隐藏提示
-    setTimeout(() => {
-      showCopySuccess.value = false
-    }, 2000)
+    const textArea = document.createElement('textarea')
+    textArea.value = prompt.value.content
+    document.body.appendChild(textArea)
+    textArea.select()
+    const success = document.execCommand('copy')
+    document.body.removeChild(textArea)
+
+    if (success) {
+      showCopySuccess.value = true
+      fadeOut.value = false
+      
+      // 1.8秒后开始淡出动画
+      setTimeout(() => {
+        fadeOut.value = true
+      }, 1800)
+      
+      // 2秒后完全隐藏提示
+      setTimeout(() => {
+        showCopySuccess.value = false
+      }, 2000)
+    } else {
+      console.error('复制失败')
+    }
   } catch (error) {
-    console.error('Failed to copy content:', error)
+    console.error('复制失败:', error)
   } finally {
     isCopying.value = false
   }
 }
-</script> 
+</script>
