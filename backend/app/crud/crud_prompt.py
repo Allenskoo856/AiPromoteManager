@@ -89,7 +89,10 @@ class CRUDPrompt(CRUDBase[Prompt, PromptCreate, PromptUpdate]):
         self, db: Session, *, owner_id: int, skip: int = 0, limit: int = 100,
         category_id: Optional[int] = None, search: Optional[str] = None
     ) -> List[Prompt]:
-        query = db.query(self.model).options(joinedload(self.model.category))
+        query = db.query(self.model).options(
+            joinedload(self.model.category),
+            joinedload(self.model.tags)
+        )
         query = query.filter(Prompt.owner_id == owner_id)
         
         if category_id is not None:
@@ -101,7 +104,7 @@ class CRUDPrompt(CRUDBase[Prompt, PromptCreate, PromptUpdate]):
                 (self.model.title.ilike(search_pattern)) |
                 (self.model.content.ilike(search_pattern))
             )
-        
+            
         return query.offset(skip).limit(limit).all()
 
     def get_public(
@@ -129,4 +132,4 @@ class CRUDPrompt(CRUDBase[Prompt, PromptCreate, PromptUpdate]):
         """
         return db.query(func.count(Prompt.id)).filter(Prompt.owner_id == user_id).scalar() or 0
 
-crud_prompt = CRUDPrompt(Prompt) 
+crud_prompt = CRUDPrompt(Prompt)

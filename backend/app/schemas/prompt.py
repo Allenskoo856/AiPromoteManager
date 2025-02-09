@@ -40,6 +40,7 @@ class Prompt(PromptBase):
     created_at: datetime
     updated_at: Optional[datetime] = None
     category: Optional[CategoryBase] = None
+    tags: List[Tag] = []
 
     class Config:
         from_attributes = True
@@ -50,4 +51,4 @@ class PromptDetail(Prompt):
     versions: List[Version] = []
 
     class Config:
-        from_attributes = True 
+        from_attributes = True

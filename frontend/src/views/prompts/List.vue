@@ -84,25 +84,25 @@
               {{ prompt.description }}
             </p>
             <div class="mt-auto space-y-3">
-              <div class="flex items-center text-sm text-gray-500">
-                <span>{{ formatDate(prompt.created_at) }}</span>
-                <span class="mx-2">·</span>
-                <span>{{ prompt.category?.name || '未分类' }}</span>
-              </div>
-              <div class="flex flex-wrap gap-2">
+              <div class="flex flex-wrap gap-1.5">
                 <span
                   v-for="tag in (prompt.tags || []).slice(0, 3)"
                   :key="tag.id"
-                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700"
+                  class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
                 >
                   {{ tag.name }}
                 </span>
                 <span
                   v-if="(prompt.tags || []).length > 3"
-                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-600"
+                  class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-gray-50 text-gray-600"
                 >
                   +{{ (prompt.tags || []).length - 3 }}
                 </span>
+              </div>
+              <div class="flex items-center text-sm text-gray-500">
+                <span>{{ formatDate(prompt.created_at) }}</span>
+                <span class="mx-2">·</span>
+                <span>{{ prompt.category?.name || '未分类' }}</span>
               </div>
             </div>
           </div>
