@@ -72,47 +72,37 @@
         :to="`/prompts/${prompt.id}`"
         class="block group"
       >
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-          <div class="p-6">
-            <h3 class="text-lg font-medium text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow h-full border border-gray-100">
+          <div class="p-5 flex flex-col h-full">
+            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2 mb-4">
               {{ prompt.title }}
             </h3>
-            <p class="mt-2 text-sm text-gray-500 line-clamp-3">
+            <p class="text-sm text-gray-600 line-clamp-3 mb-4">
               {{ prompt.content }}
             </p>
-            <div class="mt-4 flex items-center text-sm text-gray-500">
-              <span>{{ formatDate(prompt.created_at) }}</span>
-              <span class="mx-2">·</span>
-              <span>{{ prompt.category?.name || '未分类' }}</span>
-            </div>
-            <div class="mt-3 flex flex-wrap gap-2">
-              <span
-                v-for="tag in (prompt.tags || []).slice(0, 3)"
-                :key="tag.id"
-                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800"
-              >
-                {{ tag.name }}
-              </span>
-              <span
-                v-if="(prompt.tags || []).length > 3"
-                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
-              >
-                +{{ (prompt.tags || []).length - 3 }}
-              </span>
-            </div>
-            <div class="mt-4 flex items-center justify-between text-sm text-gray-500">
-              <div class="flex items-center">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                {{ prompt.usageCount }}
+            <p class="text-sm text-gray-500 line-clamp-2 mb-4">
+              {{ prompt.description }}
+            </p>
+            <div class="mt-auto space-y-3">
+              <div class="flex items-center text-sm text-gray-500">
+                <span>{{ formatDate(prompt.created_at) }}</span>
+                <span class="mx-2">·</span>
+                <span>{{ prompt.category?.name || '未分类' }}</span>
               </div>
-              <div class="flex items-center">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-                {{ prompt.likeCount }}
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="tag in (prompt.tags || []).slice(0, 3)"
+                  :key="tag.id"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700"
+                >
+                  {{ tag.name }}
+                </span>
+                <span
+                  v-if="(prompt.tags || []).length > 3"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-600"
+                >
+                  +{{ (prompt.tags || []).length - 3 }}
+                </span>
               </div>
             </div>
           </div>
@@ -297,4 +287,4 @@ function getCategoryIcon(categoryName: string): string {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-</style> 
+</style>
