@@ -1,5 +1,5 @@
 # 构建阶段
-FROM python:3.11-slim as builder
+FROM python:3.9.6-alpine as builder
 
 WORKDIR /app
 
@@ -8,14 +8,6 @@ COPY requirements.txt .
 
 # 安装依赖
 RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && pip config set install.trusted-host mirrors.aliyun.com && pip install --no-cache-dir -r requirements.txt
-
-# 运行阶段
-FROM python:3.11-slim
-
-WORKDIR /app
-
-# 复制依赖
-COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 
 # 复制应用代码
 COPY . .
